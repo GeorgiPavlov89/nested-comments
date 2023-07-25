@@ -1,0 +1,48 @@
+[
+  
+   
+      {
+        "id": 1,
+        "content": "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+        "createdAt": "1 month ago",
+        "score": 12,
+        "imageUrl": "https://secure.internxt.com/sh/file/f568b81f0c9e84b1ca3c/53c8d9eb71c9ffda806ca3fe25160d9b77a7fd9160e381aa1a8b3f308822d655",
+          "username": "amyrobson",
+        
+        "replies": []
+      },
+      {
+        "id": 2,
+        "content": "Woah, your project looks awesome! How long have you been coding for? I'm still new, but think I want to dive into React as well soon. Perhaps you can give me an insight on where I can learn React? Thanks!",
+        "createdAt": "2 weeks ago",
+        "score": 5,
+        "imageUrl": "https://share.eu.internxt.com/sh/file/8703b0be2a0e96d4c45e/d00e2992a0462c509cf416f306ca21fbbfa551d3019b1f082eb31740a0e31416",
+
+          "username": "maxblagun",
+        
+        "replies": [
+          {
+            "id": 3,
+            "content": "If you're still new, I'd recommend focusing on the fundamentals of HTML, CSS, and JS before considering React. It's very tempting to jump ahead but lay a solid foundation first.",
+            "createdAt": "1 week ago",
+            "score": 4,
+            "replyingTo": "maxblagun",
+            "imageUrl": "https://secure.ue.internxt.com/sh/file/77b25c7af78f7e8f733e/c49c1d0138a4a815d77a327d2dc8cc06210d20db8773c91c3b44d5ca8efca5cb",
+
+              "username": "ramsesmiron"
+            },
+          
+          {
+            "id": 4,
+            "content": "I couldn't agree more with this. Everything moves so fast and it always seems like everyone knows the newest library/framework. But the fundamentals are what stay constant.",
+            "createdAt": "2 days ago",
+            "score": 2,
+            "replyingTo": "ramsesmiron",
+            
+              "username": "juliusomo"
+            }
+          
+        ]
+      }
+    
+    ]

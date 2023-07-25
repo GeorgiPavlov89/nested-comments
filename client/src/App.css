@@ -1,0 +1,37 @@
+.App {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+
+
+.collapse-line {
+  border: none;
+  background: none;
+  padding: 0;
+  width: 15px;
+  margin-left: .5rem;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  transform: translateX(-50%);
+}
+.collapse-line:hover::before,
+.collapse-line:focus-visible::before {
+  background-color: hsl(223, 19%, 93%);
+}
+
+.collapse-line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: hsl(223, 19%, 93%);
+  transition: background-color 100ms ease-in-out;
+}
+.hidden {
+  display: none;
+}
