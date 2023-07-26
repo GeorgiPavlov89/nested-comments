@@ -17,7 +17,15 @@ const dateFormater = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
   timeStyle: "short",
 });
-function SingleComment({ id, content, username, createdAt, userimg, replies }) {
+function SingleComment({
+  id,
+  content,
+  username,
+  createdAt,
+  userimg,
+  replies,
+  score,
+}) {
   const { post } = useComment();
 
   return (
@@ -46,11 +54,14 @@ function SingleComment({ id, content, username, createdAt, userimg, replies }) {
                             </span>
                           </p>
                         </div>
-
-                        <div>
-                          <MDBBtn>Delete</MDBBtn>
-                          <MDBBtn>Edit</MDBBtn>
-                        </div>
+                        {username === "juliusomo" ? (
+                          <div>
+                            <MDBBtn>Delete</MDBBtn>
+                            <MDBBtn>Edit</MDBBtn>
+                          </div>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <div className="d-flex flex-start">
                         <div className="flex-grow-1 flex-shrink-1">
@@ -77,7 +88,9 @@ function SingleComment({ id, content, username, createdAt, userimg, replies }) {
                                 <span
                                   style={{ color: "#5357B6" }}
                                   className="fw-bold"
-                                ></span>
+                                >
+                                  {score}
+                                </span>
                                 <MDBBtn
                                   className="mx-2"
                                   color="tertiary"
