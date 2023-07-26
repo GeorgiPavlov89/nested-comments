@@ -23,7 +23,9 @@ const dataBaseUrl = process.env.DATABASE_URL;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to database
-mongoose.connect(dataBaseUrl);
+mongoose.connect(
+  "mongodb+srv://pavlov:nemasmisalbe@blog-mern.cadhlc5.mongodb.net/?retryWrites=true&w=majority"
+);
 
 app.get("/posts", async (req, res) => {
   try {
