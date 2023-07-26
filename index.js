@@ -54,7 +54,7 @@ app.get("/posts", async (req, res) => {
 
 // Handle requests for the React app
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build/index.html"));
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
 });
 
 connectDB().then(() => {
