@@ -1,11 +1,10 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const Post = require("./models/Post");
 const { PostModel } = require("./models/Post");
@@ -20,11 +19,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "../client/build")));
-
-// Handle requests for the React app
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
 
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -56,6 +50,11 @@ app.get("/posts", async (req, res) => {
     // Send an appropriate error response to the client
     res.status(500).json({ error: "Failed to fetch posts" });
   }
+});
+
+// Handle requests for the React app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 connectDB().then(() => {
