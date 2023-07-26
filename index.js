@@ -11,7 +11,7 @@ const { PostModel } = require("./models/Post");
 app.use(express.static("public/images/"));
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "https://puce-naughty-oyster.cyclic.app",
     credentials: true,
   })
 );
