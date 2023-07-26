@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const Post = require("./models/Post");
 const { PostModel } = require("./models/Post");
@@ -31,7 +32,7 @@ const dataBaseUrl = process.env.DATABASE_URL;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to database
-mongoose.connect(dataBaseUrl);
+const client = new MongoClient(dataBaseUrl);
 
 app.get("/posts", async (req, res) => {
   try {
@@ -50,4 +51,10 @@ app.get("/posts", async (req, res) => {
   }
 });
 
-app.listen({ port: process.env.PORT });
+client.connect((err) => {
+  if (err) {
+    console.log(err);
+    return false;
+  }
+  app.listen({ port: process.env.PORT });
+});
