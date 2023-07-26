@@ -1,5 +1,5 @@
 const express = require("express");
-
+const path = require("path");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -16,16 +16,22 @@ app.use(
 );
 app.use(express.json());
 app.use(bodyParser.json());
-
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", function (_, res) {
+  res.sendFile(
+    path.join(__dirname, "./client/build/index.html"),
+    function (err) {
+      res.status(500).send(err);
+    }
+  );
+});
 const dataBaseUrl = process.env.DATABASE_URL;
 
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to database
-mongoose.connect(
-  "mongodb+srv://pavlov:nemasmisalbe@blog-mern.cadhlc5.mongodb.net/?retryWrites=true&w=majority"
-);
+mongoose.connect(dataBaseUrl);
 
 app.get("/posts", async (req, res) => {
   try {
