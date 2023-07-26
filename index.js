@@ -18,7 +18,7 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "./client/build")));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -54,7 +54,7 @@ app.get("/posts", async (req, res) => {
 
 // Handle requests for the React app
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+  res.sendFile(path.join(__dirname, "client\buildindex.html"));
 });
 
 connectDB().then(() => {
