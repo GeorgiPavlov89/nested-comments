@@ -1,6 +1,7 @@
 const express = require("express");
-const path = require("path");
 const app = express();
+const path = require("path");
+const PORT = process.env.PORT || 9000;
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -17,6 +18,7 @@ app.use(
 );
 app.use(express.json());
 app.use(bodyParser.json());
+
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (_, res) {
   res.sendFile(
@@ -26,13 +28,21 @@ app.get("*", function (_, res) {
     }
   );
 });
-const dataBaseUrl = process.env.DATABASE_URL;
 
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connect to database
-const client = new MongoClient(dataBaseUrl);
+mongoose.set("strictQuery", false);
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.DATABASE_URL);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
 
 app.get("/posts", async (req, res) => {
   try {
@@ -51,10 +61,8 @@ app.get("/posts", async (req, res) => {
   }
 });
 
-client.connect((err) => {
-  if (err) {
-    console.log(err);
-    return false;
-  }
-  app.listen({ port: process.env.PORT });
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`listening on ${PORT}`);
+  });
 });
