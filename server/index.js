@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 const dataBaseUrl = process.env.DATABASE_URL;
+
 // Parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
