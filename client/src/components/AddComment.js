@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext } from "react";
-import { ComentContext } from "../App";
+import { useState, useEffect } from "react";
+
 import {
   MDBBtn,
   MDBCard,
@@ -12,45 +12,30 @@ import {
   MDBRow,
   MDBTextArea,
 } from "mdb-react-ui-kit";
-function AddComment({ user, addNewComment }) {
-  const [content, setContent] = useState("");
-  const [username, setUsername] = useState("juliusomo");
-  const [createdAt, setCreatedAt] = useState("1 hour ago");
-  const [score, setScore] = useState(0);
+function AddComment({
+  onSubmit,
+  imageUrl,
+  score,
+  autoFocus = false,
+  newUsername,
+  initialValue = "",
+}) {
+  const [inputContent, setInputContent] = useState(initialValue);
+
   // const comment = useContext(ComentContext);
 
   async function handleSubmitComment(e) {
     e.preventDefault();
+    if (inputContent.trim() === "") {
+      return;
+    }
 
-    const data = {
-      content: content,
-      username: username,
-      createdAt: createdAt,
-      score: score,
-    };
-
-    const response = await fetch("http://localhost:4000/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    // Fetch the updated list of comments
-    const responseData = await response.json();
-
-    // Update the comments state in the parent component (App.js)
-    addNewComment(responseData);
-
-    setContent("");
-    setUsername("");
-    setCreatedAt("");
-    setScore(0);
+    onSubmit(inputContent.trim(), score, newUsername, imageUrl);
+    setInputContent("");
   }
 
   return (
-    <form>
+    <form onSubmit={handleSubmitComment}>
       <MDBContainer className="py-5" style={{ maxWidth: "1000px" }} type="form">
         <MDBRow className="justify-content-center">
           <MDBCol md="12" lg="10" xl="8">
@@ -59,8 +44,9 @@ function AddComment({ user, addNewComment }) {
                 <div className="d-flex flex-start w-100">
                   <MDBTextArea
                     type="content"
-                    onChange={(e) => setContent(e.target.value)}
-                    value={content}
+                    autoFocus={autoFocus}
+                    value={inputContent}
+                    onChange={(e) => setInputContent(e.target.value)}
                     label="Add Comment"
                     id="textAreaExample"
                     rows={3}
@@ -77,11 +63,7 @@ function AddComment({ user, addNewComment }) {
                     height="40"
                   />
 
-                  <MDBBtn
-                    size="sm"
-                    className="me-1"
-                    onClick={handleSubmitComment}
-                  >
+                  <MDBBtn size="sm" className="me-1" type="submit">
                     SEND
                   </MDBBtn>
                 </div>

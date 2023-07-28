@@ -25,7 +25,7 @@ function ReplayContainer({ replies }) {
                   createdAt={replay.createdAt}
                   score={replay.score}
                   username={replay.username}
-                  userImg={replay.image}
+                  userImg={replay.imageUrl}
                   replyingTo={replay.replyingTo}
                 />
               </MDBRow>

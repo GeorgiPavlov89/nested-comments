@@ -1,29 +1,30 @@
-import React, { useContext } from "react";
-import { useAsync } from "../hooks/useAsync";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { getPosts } from "../services/posts";
 
-const Context = React.createContext();
+const CommentContext = createContext();
 
 export function useComment() {
-  return useContext(Context);
+  return useContext(CommentContext);
 }
 
 export function CommentProvider({ children }) {
-  const { loading, error, value: post } = useAsync(() => getPosts());
-  console.log(post);
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const fetchedPosts = await getPosts();
+        setComments(fetchedPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    }
+    fetchPosts();
+  }, []);
+
   return (
-    <Context.Provider
-      value={{
-        post,
-      }}
-    >
-      {loading ? (
-        <h1>Loading</h1>
-      ) : error ? (
-        <h1 className="error-msg">{error}</h1>
-      ) : (
-        children
-      )}
-    </Context.Provider>
+    <CommentContext.Provider value={{ comments, setComments }}>
+      {children}
+    </CommentContext.Provider>
   );
 }

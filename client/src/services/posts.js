@@ -1,5 +1,8 @@
+// services/posts.js
 import { makeRequest } from "./makeRequest";
 
-export function getPosts() {
-  return makeRequest("/posts");
+export async function getPosts() {
+  const posts = await makeRequest("/posts");
+  // Check if 'posts' has the expected data
+  return posts;
 }
