@@ -9,9 +9,11 @@ import {
   MDBTypography,
   MDBBtn,
 } from "mdb-react-ui-kit";
-
+import { useState } from "react";
 import ReplayContainer from "./ReplayContainer";
 import { deleteComment } from "../services/comments";
+import { editComment } from "../services/comments";
+
 
 const dateFormater = new Intl.DateTimeFormat(undefined, {
   dateStyle: "medium",
@@ -26,7 +28,12 @@ function SingleComment({
   replies,
   score,
   handleDelete,
+  handleEdit,
 }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(content);
+
+
   function deleteCommentHandler(e) {
     deleteComment(commentId)
       .then(() => {
@@ -34,6 +41,20 @@ function SingleComment({
       })
       .catch((error) => {
         console.error("Error deleting comment:", error);
+      });
+  }
+
+  function editCommentHandler(e) {
+    
+    editComment(commentId, editedContent)
+    
+      .then((updatedComment) => {
+        
+        handleEdit(updatedComment);
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error while editing:", error);
       });
   }
   return (
@@ -66,10 +87,24 @@ function SingleComment({
                       <div className="d-flex flex-start">
                         <div className="flex-grow-1 flex-shrink-1">
                           <div>
-                            <p className="small mb-0">{content}</p>
+                            {isEditing ? (
+                              <div data-mdb-input-init className="form-outline mb-4">
+                              <textarea className="form-control" id="textAreaExample6" rows="3"
+                                value={editedContent}
+                                onChange={(e) =>
+                                  setEditedContent(e.target.value)
+                                }
+                              />
+                              
+                            </div>
+                                
+                            
+                            ) : (
+                              <p className="small mb-0">{content}</p>
+                            )}
                             <div className="d-flex justify-content-between">
                               <div className="d-flex align-items-center square bg-light rounded-5">
-                                <MDBBtn
+                              <MDBBtn
                                   className="mx-2"
                                   color="tertiary"
                                   rippleColor="light"
@@ -124,7 +159,7 @@ function SingleComment({
                                       gap: "5px",
                                     }}
                                   >
-                                    <svg
+                                             <svg
                                       type="button"
                                       width="12"
                                       height="12"
@@ -144,14 +179,33 @@ function SingleComment({
                                       Delete
                                     </span>
                                   </div>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      gap: "5px",
-                                    }}
-                                  >
-                                    <svg
+                                  {isEditing ? (
+                                    <div
+                                      onClick={editCommentHandler}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "5px",
+                                      }}
+                                    >
+                                      <span
+                                        type="button"
+                                        style={{ color: "#5357B6" }}
+                                        className="small fw-bold"
+                                      >
+                                        Save
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <div
+                                      onClick={() => setIsEditing(true)}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "5px",
+                                      }}
+                                    >
+                                      <svg
                                       width="12"
                                       height="12"
                                       xmlns="http://www.w3.org/2000/svg"
@@ -169,23 +223,11 @@ function SingleComment({
                                       {" "}
                                       Edit
                                     </span>
-                                  </div>
+                                    </div>
+                                  )}
                                 </div>
                               ) : (
-                                <a href="#!">
-                                  <svg
-                                    width="14"
-                                    height="13"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z"
-                                      fill="#5357B6"
-                                    />
-                                  </svg>
-                                  <span className="small fw-bold"> Reply</span>
-                                </a>
-                              )}
+                                [])}
                             </div>
                           </div>
                         </div>
@@ -198,12 +240,10 @@ function SingleComment({
           </MDBRow>
         </MDBContainer>
       </section>
-      {replies?.length > 0 ? (
+      {replies?.length > 0 && (
         <MDBContainer className="py-3 d-flex " style={{ maxWidth: "670px" }}>
           <ReplayContainer replies={replies} />
         </MDBContainer>
-      ) : (
-        ""
       )}
     </>
   );

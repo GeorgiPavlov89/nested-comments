@@ -4,17 +4,16 @@ import {
   MDBCardBody,
   MDBCardImage,
   MDBCol,
-  MDBContainer,
-  MDBIcon,
   MDBRow,
-  MDBTypography,
   MDBBtn,
 } from "mdb-react-ui-kit";
+
 function Replay({ content, createdAt, score, username, userImg, replyingTo }) {
   const dateFormater = new Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
     timeStyle: "short",
   });
+  
   return (
     <MDBCard>
       <MDBCardBody>

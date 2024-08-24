@@ -5,6 +5,7 @@ import AddComment from "./AddComment";
 import { useAsyncFn } from "../hooks/useAsync";
 import { createComment } from "../services/comments";
 import { deleteComment } from "../services/comments";
+import { editComment } from "../services/comments";
 
 function PostLists() {
   const { comments, setComments } = useComment();
@@ -33,6 +34,14 @@ function PostLists() {
       setComments((prevComments) => [newComment, ...prevComments]);
     });
   }
+  
+  function onCommentEdit(updatedComment) {
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment._id === updatedComment._id ? updatedComment : comment
+      )
+    );
+  }
 
   function onCommentDelete(commentId) {
     deleteComment(commentId)
@@ -60,6 +69,7 @@ function PostLists() {
             score={comment.score}
             replies={comment.replies}
             handleDelete={onCommentDelete}
+            handleEdit={onCommentEdit}
           />
         ))}
       <AddComment error={error} content={content} onSubmit={onCommentCreate} />

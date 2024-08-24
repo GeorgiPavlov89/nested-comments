@@ -6,7 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const Post = require("./models/Post");
+const { ReplyModel } = require("./models/Post")
 const { PostModel } = require("./models/Post");
 app.use(express.static("public/images/"));
 
@@ -78,6 +78,28 @@ app.post("/posts", async (req, res) => {
   }
 });
 
+//Update comment
+app.put("/posts/:commentId", async (req, res) => {
+  const { commentId } = req.params;
+  const { newContent } = req.body;
+  
+  try {
+    const updatedComment = await PostModel.findByIdAndUpdate(
+      commentId,
+      { content: newContent },
+      { new: true }
+    );
+    if (!updatedComment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+    res.json(updatedComment);
+  } catch (error) {
+    console.error("Error updating comment:", error);
+    res.status(500).json({ message: "Failed to update comment" });
+  }
+});
+
+
 // Delete comment
 app.delete("/posts/:commentId", async (req, res) => {
   const { commentId } = req.params;
@@ -89,6 +111,18 @@ app.delete("/posts/:commentId", async (req, res) => {
     res.status(500).json({ message: "Failed to delete comment" });
   }
 });
+
+// Delete replay
+app.delete("/posts/replies" , async(req,res) => {
+  const { replayId } = req.params
+
+  try {
+    await ReplyModel.findByIdAndDelete(replayId);
+    res.json({ message: "Replay deleted successfully" });
+  }catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ message: "Failed to delete comment" });
+}})
 // Handle requests for the React app
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/build", "index.html"));
