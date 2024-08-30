@@ -1,5 +1,5 @@
 import SingleComment from "./SingleComment";
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import { useComment } from "../context/CommentContext";
 import AddComment from "./AddComment";
 import { useAsyncFn } from "../hooks/useAsync";
@@ -10,16 +10,23 @@ import { editComment } from "../services/comments";
 function PostLists() {
   const { comments, setComments } = useComment();
   const [content, setContent] = useState("");
+ 
+  
   const {
     loading,
     error,
     execute: createCommentFn,
   } = useAsyncFn(createComment);
 
+ 
+  const sortedComments = [...comments].sort((a, b) => b.score - a.score)
+
+  
   function onCommentCreate(content) {
     if (!content) {
       return;
     }
+    
 
     const newCommentData = {
       content,
@@ -31,7 +38,7 @@ function PostLists() {
 
     createCommentFn(newCommentData).then((response) => {
       const newComment = response.comment;
-      setComments((prevComments) => [newComment, ...prevComments]);
+      setComments((prevComments) => [...prevComments, newComment]);
     });
   }
   
@@ -54,11 +61,18 @@ function PostLists() {
         console.error("Error deleting comment:", error);
       });
   }
-
+  function handleScoreUpdate(commentId, newScore) {
+    setComments((prevComments) =>
+      prevComments.map((comment) =>
+        comment._id === commentId ? { ...comment, score: newScore } : comment
+      )
+    );
+  }
+  
   return (
     <>
-      {comments &&
-        comments.map((comment) => (
+      {sortedComments &&
+        sortedComments.map((comment) => (
           <SingleComment
             key={comment._id}
             commentId={comment._id}
@@ -70,6 +84,8 @@ function PostLists() {
             replies={comment.replies}
             handleDelete={onCommentDelete}
             handleEdit={onCommentEdit}
+            handleScoreUpdate={handleScoreUpdate}
+          
           />
         ))}
       <AddComment error={error} content={content} onSubmit={onCommentCreate} />
