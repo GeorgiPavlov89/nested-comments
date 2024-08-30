@@ -11,16 +11,15 @@ export function CommentProvider({ children }) {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    async function fetchComments() {
+    async function fetchPosts() {
       try {
-        const response = await getPosts()
-        setComments(response);
+        const fetchedPosts = await getPosts();
+        setComments(fetchedPosts);
       } catch (error) {
-        console.error("Error fetching comments:", error);
+        console.error("Error fetching posts:", error);
       }
     }
-  
-    fetchComments();
+    fetchPosts();
   }, []);
 
   return (

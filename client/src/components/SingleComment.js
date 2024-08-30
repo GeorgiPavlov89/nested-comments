@@ -29,12 +29,9 @@ function SingleComment({
   score,
   handleDelete,
   handleEdit,
-  handleScoreUpdate
-  
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
-  const [newScore, setNewScore] = useState(score)
 
 
   function deleteCommentHandler(e) {
@@ -59,17 +56,6 @@ function SingleComment({
       .catch((error) => {
         console.error("Error while editing:", error);
       });
-  }
-  function onIncrement () {
-    handleScoreUpdate( commentId,score + 1)
-  }
-  
-  function onDecrement () {
-    if (!score == 0) {
-
-      handleScoreUpdate( commentId,score - 1)
-    }
-
   }
   return (
     <>
@@ -119,7 +105,6 @@ function SingleComment({
                             <div className="d-flex justify-content-between">
                               <div className="d-flex align-items-center square bg-light rounded-5">
                               <MDBBtn
-                                  onClick={onIncrement}
                                   className="mx-2"
                                   color="tertiary"
                                   rippleColor="light"
@@ -142,7 +127,6 @@ function SingleComment({
                                   {score}
                                 </span>
                                 <MDBBtn
-                                  onClick={onDecrement}
                                   className="mx-2"
                                   color="tertiary"
                                   rippleColor="light"
