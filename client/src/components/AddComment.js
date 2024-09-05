@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
 import {
   MDBBtn,
   MDBCard,
-  MDBCardBody,
   MDBCardFooter,
   MDBCardImage,
   MDBCol,
   MDBContainer,
-  MDBIcon,
   MDBRow,
   MDBTextArea,
 } from "mdb-react-ui-kit";
+
 function AddComment({
+  setIsReplying,
+  isReplying,
   onSubmit,
   imageUrl,
   score,
@@ -22,16 +22,19 @@ function AddComment({
 }) {
   const [inputContent, setInputContent] = useState(initialValue);
 
-  // const comment = useContext(ComentContext);
-
   async function handleSubmitComment(e) {
     e.preventDefault();
     if (inputContent.trim() === "") {
       return;
     }
-
+  
     onSubmit(inputContent.trim(), score, newUsername, imageUrl);
     setInputContent("");
+  }
+
+  function handleCloseReply(e) {
+    e.preventDefault()
+    setIsReplying(false)
   }
 
   return (
@@ -47,7 +50,7 @@ function AddComment({
                     autoFocus={autoFocus}
                     value={inputContent}
                     onChange={(e) => setInputContent(e.target.value)}
-                    label="Add Comment"
+                    label={isReplying ? "Add Reply" : "Add Comment"}
                     id="textAreaExample"
                     rows={3}
                     style={{ backgroundColor: "#fff" }}
@@ -62,10 +65,15 @@ function AddComment({
                     width="40"
                     height="40"
                   />
-
-                  <MDBBtn size="sm" className="me-1" type="submit">
+                  <div>
+                    {isReplying  ? <MDBBtn size="sm" className="me-1" color="danger" onClick={handleCloseReply}>
+                    CANCEL</MDBBtn>
+                  : ""}
+                   <MDBBtn size="sm" className="me-1" type="submit">
                     SEND
                   </MDBBtn>
+                  
+                  </div>
                 </div>
               </MDBCardFooter>
             </MDBCard>

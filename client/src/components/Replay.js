@@ -9,11 +9,7 @@ import {
 } from "mdb-react-ui-kit";
 
 function Replay({ content, createdAt, score, username, userImg, replyingTo }) {
-  const dateFormater = new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-  
+
   return (
     <MDBCard>
       <MDBCardBody>
@@ -31,7 +27,7 @@ function Replay({ content, createdAt, score, username, userImg, replyingTo }) {
                 <p className="fw-bold m-0">
                   {username}{" "}
                   <span className="small m-3 fw-light">
-                    {dateFormater.format(Date.parse(createdAt))}
+                    {createdAt}
                   </span>
                 </p>
               </div>

@@ -10,6 +10,7 @@ import { editComment } from "../services/comments";
 function PostLists() {
   const { comments, setComments } = useComment();
   const [content, setContent] = useState("");
+  
  
   
   const {
@@ -35,11 +36,18 @@ function PostLists() {
       newUsername: "juliusomo",
       imageUrl: "./images/avatars/image-juliusomo.webp",
     };
-
-    createCommentFn(newCommentData).then((response) => {
-      const newComment = response.comment;
-      setComments((prevComments) => [...prevComments, newComment]);
-    });
+  
+    createComment(newCommentData)
+      .then((response) => {
+        if (response && response.content) {
+          setComments((prevComments) => [...prevComments, response]);
+        } else {
+          console.error("Unexpected response format:", response);
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating comment:", error);
+      });
   }
   
   function onCommentEdit(updatedComment) {
@@ -71,24 +79,26 @@ function PostLists() {
   
   return (
     <>
-      {sortedComments &&
-        sortedComments.map((comment) => (
-          <SingleComment
-            key={comment._id}
-            commentId={comment._id}
-            content={comment.content}
-            createdAt={comment.createdAt}
-            username={comment.username}
-            userimg={comment.imageUrl}
-            score={comment.score}
-            replies={comment.replies}
-            handleDelete={onCommentDelete}
-            handleEdit={onCommentEdit}
-            handleScoreUpdate={handleScoreUpdate}
-          
-          />
-        ))}
-      <AddComment error={error} content={content} onSubmit={onCommentCreate} />
+     {sortedComments &&
+  sortedComments.map((comment) => {
+    
+    return (
+      <SingleComment
+        key={comment._id}
+        commentId={comment._id}
+        content={comment.content}
+        createdAt={comment.createdAt}
+        username={comment.username}
+        userimg={comment.imageUrl}
+        score={comment.score}
+        replies={comment.replies}
+        handleDelete={onCommentDelete}
+        handleEdit={onCommentEdit}
+        handleScoreUpdate={handleScoreUpdate}
+      />
+    );
+  })}
+      <AddComment error={error} content={content} onSubmit={onCommentCreate} newUsername="juliusomo" />
     </>
   );
 }

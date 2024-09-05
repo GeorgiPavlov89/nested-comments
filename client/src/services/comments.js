@@ -1,4 +1,4 @@
-import { makeRequest } from "./makeRequest";
+import { makeRequest } from './makeRequest'; 
 
 export function createComment({
   postId,
@@ -7,13 +7,25 @@ export function createComment({
   imageUrl,
   newUsername,
   score,
-  replies
+  replies,
 }) {
   return makeRequest("/posts", {
     method: "POST",
-    data: { content, parentId, postId, newUsername, imageUrl, score , replies},
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {
+      content,
+      parentId,
+      postId,
+      username: newUsername,
+      imageUrl,
+      score,
+      replies
+    },
   });
 }
+
 
 export function deleteComment(commentId) {
   return makeRequest(`posts/${commentId}`, {
@@ -21,12 +33,12 @@ export function deleteComment(commentId) {
   });
 }
 
-export function editComment(commentId, newContent) {
+export function editComment(commentId, editedContent) {
   return makeRequest(`posts/${commentId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    data: JSON.stringify({ newContent})
-  })
+    data: { content: editedContent },
+  });
 }

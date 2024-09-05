@@ -1,15 +1,11 @@
 import React from "react";
 import Replay from "./Replay";
 import {
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
+
   MDBCol,
-  MDBContainer,
-  MDBIcon,
+ 
   MDBRow,
-  MDBTypography,
-  MDBBtn,
+ 
 } from "mdb-react-ui-kit";
 function ReplayContainer({ replies }) {
   return (
